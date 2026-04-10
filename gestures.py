@@ -20,6 +20,7 @@ Mouse-mode gestures
   Right Click Thumb tip (#4) pinches middle tip (#12). Cursor freezes.
   Drag        Pinch (thumb+index) held > DRAG_HOLD_SEC while moving.
   Scroll      Index + middle fingers extended together, hand moves up/down.
+  Keyboard    Toggle  Index + middle + ring extended, pinky curled.
 
 Gesture-mode gestures
 ─────────────────────
@@ -27,7 +28,7 @@ Gesture-mode gestures
   Brightness  Index + middle extended, move hand left/right.
   Mute        Fist (all fingers curled) held briefly.
   Play/Pause  Thumbs-up (thumb extended, others curled).
-  Keyboard    Toggle  Index + middle + ring extended, pinky curled.
+
 """
 
 import math

@@ -451,7 +451,9 @@ def main():
             mode_switch_progress = get_mode_switch_progress(prev_state)
 
             # ── Use the first detected hand for control ──────────────────
-            if num_hands >= 1:
+            # If mode_switch_progress > 0, suppress all other actions so we don't
+            # accidentally trigger a mouse click when forming the fists.
+            if num_hands >= 1 and mode_switch_progress == 0.0:
                 landmarks = result.hand_landmarks[0]
 
                 if current_mode == "mouse":
@@ -546,7 +548,7 @@ def main():
                                            debug=args.debug)
 
             else:
-                # No hand detected — reset drag state
+                # No hand detected or mode switch in progress — reset drag state
                 if prev_state.get("was_dragging", False):
                     pyautogui.mouseUp()
                     prev_state["was_dragging"] = False
@@ -590,7 +592,7 @@ def main():
             else:
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
-
+                
     # Cleanup — make sure mouse is released
     if prev_state.get("was_dragging", False):
         pyautogui.mouseUp()
