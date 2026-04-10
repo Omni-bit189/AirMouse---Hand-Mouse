@@ -251,14 +251,15 @@ def draw_hud(frame, gesture_name: str, mode: str, fps: float, debug: bool,
 
     # Gesture-name colours
     mouse_colors = {
-        "move":        (0, 255, 0),
-        "left_click":  (0, 200, 255),
-        "right_click": (0, 100, 255),
-        "drag_start":  (255, 100, 0),
-        "dragging":    (255, 50, 50),
-        "drag_end":    (200, 200, 0),
-        "scroll":      (255, 255, 0),
-        "idle":        (180, 180, 180),
+        "move":            (0, 255, 0),
+        "left_click":      (0, 200, 255),
+        "right_click":     (0, 100, 255),
+        "drag_start":      (255, 100, 0),
+        "dragging":        (255, 50, 50),
+        "drag_end":        (200, 200, 0),
+        "scroll":          (255, 255, 0),
+        "toggle_keyboard": (255, 0, 255),
+        "idle":            (180, 180, 180),
     }
     gesture_colors = {
         "volume_up":       (0, 220, 255),
@@ -267,7 +268,6 @@ def draw_hud(frame, gesture_name: str, mode: str, fps: float, debug: bool,
         "brightness_down": (0, 200, 200),
         "mute":            (0, 0, 255),
         "play_pause":      (255, 200, 0),
-        "toggle_keyboard": (255, 0, 255),
         "idle":            (180, 180, 180),
     }
     colors = mouse_colors if mode == "mouse" else gesture_colors
@@ -502,6 +502,9 @@ def main():
                     elif gesture_name == "drag_end":
                         pyautogui.mouseUp()
 
+                    elif gesture_name == "toggle_keyboard":
+                        toggle_keyboard()
+                        
                     elif gesture_name == "scroll":
                         pyautogui.moveTo(int(smooth_x), int(smooth_y))
                         ticks = int(gr.scroll_delta * SCROLL_SENSITIVITY)
@@ -536,8 +539,6 @@ def main():
                         toggle_mute()
                     elif gesture_name == "play_pause":
                         play_pause()
-                    elif gesture_name == "toggle_keyboard":
-                        toggle_keyboard()
 
                     # Draw on preview
                     if not args.no_preview:

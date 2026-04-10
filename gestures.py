@@ -27,6 +27,7 @@ Gesture-mode gestures
   Brightness  Index + middle extended, move hand left/right.
   Mute        Fist (all fingers curled) held briefly.
   Play/Pause  Thumbs-up (thumb extended, others curled).
+  Keyboard    Toggle  Index + middle + ring extended, pinky curled.
 """
 
 import math
@@ -273,7 +274,7 @@ def detect_gesture(landmarks, prev_state: dict) -> GestureResult:
     cursor_y = landmarks[INDEX_TIP].y
 
     pinch_dist     = distance(landmarks[THUMB_TIP], landmarks[INDEX_TIP])
-    right_pinch    = distance(landmarks[THUMB_TIP], landmarks[MIDDLE_TIP])
+    pinky_pinch    = distance(landmarks[THUMB_TIP], landmarks[PINKY_TIP])
 
     index_up  = is_finger_extended(landmarks, "index")
     middle_up = is_finger_extended(landmarks, "middle")
@@ -281,6 +282,18 @@ def detect_gesture(landmarks, prev_state: dict) -> GestureResult:
     pinky_up  = is_finger_extended(landmarks, "pinky")
 
     now = time.time()
+
+    # ── Keyboard Toggle: index + middle + ring extended, pinky curled ────
+    if index_up and middle_up and ring_up and not pinky_up:
+        last_kb = prev_state.get("last_keyboard", 0.0)
+        if now - last_kb > GESTURE_COOLDOWN_SEC:
+            prev_state["last_keyboard"] = now
+            return GestureResult("toggle_keyboard", (cursor_x, cursor_y), 0.0)
+        
+        # Idle state with frozen cursor so it doesn't jump
+        frozen_x = prev_state.get("last_move_x", cursor_x)
+        frozen_y = prev_state.get("last_move_y", cursor_y)
+        return GestureResult("idle", (frozen_x, frozen_y), 0.0)
 
     # ── Scroll: index + middle extended, others curled ────────────────────
     if index_up and middle_up and not ring_up and not pinky_up:
@@ -309,14 +322,13 @@ def detect_gesture(landmarks, prev_state: dict) -> GestureResult:
     frozen_x = prev_state.get("last_move_x", cursor_x)
     frozen_y = prev_state.get("last_move_y", cursor_y)
 
-    # ── Right-click: middle finger extended + thumb pinches to it ─────────
-    # Require middle finger to be deliberately extended so that natural
-    # thumb-to-middle proximity during movement doesn't false-trigger.
-    if middle_up and not ring_up and not pinky_up:
-        if right_pinch < RIGHT_CLICK_DIST_THRESHOLD:
-            if not prev_state.get("was_dragging", False):
-                prev_state.pop("pinch_start", None)
-                return GestureResult("right_click", (frozen_x, frozen_y), 0.0)
+    # ── Right-click: thumb pinches pinky finger ───────────────────────────
+    # The pinky is rarely extended during normal usage, making this a very
+    # deliberate and reliable gesture that won't false-trigger.
+    if pinky_pinch < RIGHT_CLICK_DIST_THRESHOLD:
+        if not prev_state.get("was_dragging", False):
+            prev_state.pop("pinch_start", None)
+            return GestureResult("right_click", (frozen_x, frozen_y), 0.0)
 
     # ── Left-click / Drag: thumb pinches index finger ────────────────────
     if pinch_dist < CLICK_DIST_THRESHOLD:
@@ -395,15 +407,6 @@ def detect_gesture_mode(landmarks, prev_state: dict) -> GestureResult:
             return GestureResult("play_pause", (cursor_x, cursor_y), 0.0)
         return GestureResult("idle", (cursor_x, cursor_y), 0.0)
 
-    # ── Keyboard Toggle: index + middle + ring extended, pinky curled ────
-    if index_up and middle_up and ring_up and not pinky_up:
-        last_kb = prev_state.get("last_keyboard", 0.0)
-        if now - last_kb > GESTURE_COOLDOWN_SEC:
-            prev_state["last_keyboard"] = now
-            prev_state.pop("circle_positions", None)
-            prev_state.pop("gm_bri_ref_x", None)
-            return GestureResult("toggle_keyboard", (cursor_x, cursor_y), 0.0)
-        return GestureResult("idle", (cursor_x, cursor_y), 0.0)
 
     # ── Fist: all fingers curled → mute ──────────────────────────────────
     if is_fist(landmarks):

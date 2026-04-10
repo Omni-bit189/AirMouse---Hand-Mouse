@@ -50,8 +50,9 @@ This toggle works universally, no matter what mode you are currently in.
 | **Move Cursor** | ☝️ **Index finger extended** (others curled) | The cursor tracks your index fingertip. Move your hand naturally around the webcam frame. |
 | **Left Click** | 🤏 **Index + Thumb pinch** | Pinch your thumb tip to your index fingertip. The cursor will freeze in place so it doesn't drift when you pinch. |
 | **Drag & Drop** | 🤌 **Index + Thumb pinch (Hold)** | Pinch and hold for 0.3 seconds. You can then move your hand to drag the item. Release the pinch to drop. |
-| **Right Click** | ✌️ **Middle finger + Thumb pinch** (Ring/Pinky curled) | Extend your middle finger and pinch your thumb to it. |
+| **Right Click** | 🤙 **Pinky + Thumb pinch** (Others kept up or relaxed) | Very deliberate gesture — touch your thumb tip to your pinky tip. |
 | **Scroll** | ✌️ **Index + Middle extended** (Others curled) | Move your entire hand **Up or Down** in the air to scroll the page. |
+| **Toggle Keyboard** | 🖖 **Three Fingers Up** (Index, Middle, Ring extended) | Closes the Windows On-Screen Keyboard if open, or launches it if closed. |
 
 ---
 
@@ -64,7 +65,6 @@ This toggle works universally, no matter what mode you are currently in.
 | **Brightness**| ✌️ **Index + Middle extended** (move horizontally) | Move your hand **Left** to lower screen brightness, and **Right** to increase it. A brightness bar will display on the screen. |
 | **Mute / Unmute** | ✊ **Single Fist** | Briefly hold up a fist. It acts as a toggle. |
 | **Play / Pause** | 👍 **Thumbs-Up** (Thumb out, others curled) | Instantly plays or pauses whatever media/video is currently active on your computer. |
-| **Toggle Keyboard** | 🖖 **Three Fingers Up** (Index, Middle, Ring extended) | Checks if the Windows On-Screen Keyboard (`osk.exe`) is open. If it is, it kills it. If it isn't, it pops it up on your screen. |
 
 ---
 

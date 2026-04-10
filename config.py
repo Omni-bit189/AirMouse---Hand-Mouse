@@ -33,7 +33,7 @@ RIGHT_CLICK_DIST_THRESHOLD = 0.045
 CLICK_COOLDOWN_SEC = 0.4
 
 # How many pixels of vertical index-finger movement map to one scroll tick.
-SCROLL_SENSITIVITY = 100
+SCROLL_SENSITIVITY = 1000
 
 # Ignore hand movements smaller than this (normalised units) to kill jitter.
 DEADZONE = 0.005
